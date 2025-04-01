@@ -6,25 +6,25 @@ import (
 )
 
 type API struct {
-	Version string
-	Mux     http.ServeMux
+	version string
+	mux     http.ServeMux
 }
 
 func New(version string) *API {
 	return &API{
-		Version: version,
-		Mux:     *http.NewServeMux(),
+		version: version,
+		mux:     *http.NewServeMux(),
 	}
 }
 
 func (api *API) Use(router *Router) {
 	for key, val := range router.GetRoutes() {
-		api.Mux.Handle(key, val)
+		api.mux.Handle(key, val)
 	}
 }
 
 func (api *API) ListenAndServe(addr string) {
-	err := http.ListenAndServe(addr, &api.Mux)
+	err := http.ListenAndServe(addr, &api.mux)
 
 	if err != nil {
 		log.Fatalln(err)
