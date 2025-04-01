@@ -24,6 +24,7 @@ func (api *API) Use(router *Router) {
 }
 
 func (api *API) ListenAndServe(addr string) {
+	log.Println("[api] running at", addr)
 	err := http.ListenAndServe(addr, &api.mux)
 
 	if err != nil {
