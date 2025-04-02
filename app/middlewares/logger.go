@@ -15,7 +15,7 @@ type Log struct {
 	StatusCode   int     `json:"status_code"`
 	ResponseTime float32 `json:"response_time"`
 	UserAgent    string  `json:"user_agent"`
-	Referrer     string  `json:"referrer"`
+	Referer      string  `json:"referer"`
 }
 
 func getClientIP(r *http.Request) string {
@@ -39,7 +39,7 @@ func NewLogObject(r *http.Request) *Log {
 		Method:    r.Method,
 		Url:       r.URL.String(),
 		UserAgent: r.UserAgent(),
-		Referrer:  r.Referer(),
+		Referer:   r.Referer(),
 	}
 }
 
