@@ -1,4 +1,4 @@
-package middleware
+package middlewares
 
 import (
 	"encoding/json"
@@ -91,4 +91,3 @@ func Logger(next http.Handler) http.Handler {
 		fmt.Println(log)
 	})
 }
-

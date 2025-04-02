@@ -10,7 +10,8 @@ func GetRouter() *core.Router {
 	router := core.NewRouter()
 	router.SetGroup("/v1")
 
-	router.Use(middleware.Logger)
+	cors := middlewares.NewCors(map[string]bool{"*": true}, []string{}, []string{"Content-Type", "X-Custom-Header"}, true)
+	router.Use(middlewares.Logger, cors.Cors)
 
 	router.All("/hello", v1.Hello)
 
