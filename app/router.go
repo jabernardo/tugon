@@ -1,9 +1,9 @@
 package app
 
 import (
-	"github.com/jabernardo/aapi/app/handlers/v1"
-	"github.com/jabernardo/aapi/app/middlewares"
-	"github.com/jabernardo/aapi/core"
+	"github.com/jabernardo/tugon/app/handlers/v1"
+	"github.com/jabernardo/tugon/app/middlewares"
+	"github.com/jabernardo/tugon/core"
 )
 
 func GetRouter() *core.Router {

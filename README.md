@@ -1,6 +1,6 @@
-# aAPI
+# Tugon
 
-API Boiler Template for Go
+API Boiler Template for Go using net/http
 
 ## Generating Docs
 

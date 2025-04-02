@@ -4,13 +4,13 @@ import (
 	"log"
 	"os"
 
-	"github.com/jabernardo/aapi/app"
-	"github.com/jabernardo/aapi/core"
+	"github.com/jabernardo/tugon/app"
+	"github.com/jabernardo/tugon/core"
 
 	"github.com/joho/godotenv"
 )
 
-// @title         A-API
+// @title         Tugon
 // @version       1.0
 // @description   This is a simple REST API for the Boiler Plate API
 

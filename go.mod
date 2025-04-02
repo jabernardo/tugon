@@ -1,4 +1,4 @@
-module github.com/jabernardo/aapi
+module github.com/jabernardo/tugon
 
 go 1.23.0
 

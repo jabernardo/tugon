@@ -4,7 +4,7 @@ import (
 	"log"
 	"net/http"
 
-	_ "github.com/jabernardo/aapi/docs"
+	_ "github.com/jabernardo/tugon/docs"
 	httpSwagger "github.com/swaggo/http-swagger"
 )
 
