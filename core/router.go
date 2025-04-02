@@ -11,7 +11,7 @@ type Routes map[string]http.Handler
 type Router struct {
 	routes      Routes
 	middlewares []Middleware
-	Path        string
+	path        string
 }
 
 func NewRouter() *Router {
@@ -34,7 +34,7 @@ func (router *Router) SetGroup(path string) {
 	if len(router.routes) > 0 {
 		log.Fatalln("[core.router] could not set group when routes already exists")
 	}
-	router.Path = "/" + strings.Trim(path, "/")
+	router.path = "/" + strings.Trim(path, "/")
 }
 
 func (router *Router) GetRoutes() Routes {
@@ -50,7 +50,7 @@ func (router *Router) Add(method string, pattern string, handler http.HandlerFun
 		method = method + " "
 	}
 
-	grouped := fmt.Sprintf("%s %s/%s", method, router.Path, strings.Trim(pattern, "/"))
+	grouped := fmt.Sprintf("%s %s/%s", method, router.path, strings.Trim(pattern, "/"))
 
 	if _, ok := router.routes[grouped]; ok {
 		log.Fatalf("[core.router] duplicated route: `%s`\n", pattern)
