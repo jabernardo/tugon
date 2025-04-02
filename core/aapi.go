@@ -3,6 +3,9 @@ package core
 import (
 	"log"
 	"net/http"
+
+	_ "github.com/jabernardo/aapi/docs"
+	httpSwagger "github.com/swaggo/http-swagger"
 )
 
 type API struct {
@@ -24,6 +27,8 @@ func (api *API) Use(router *Router) {
 }
 
 func (api *API) ListenAndServe(addr string) {
+	api.mux.HandleFunc("/swagger/", httpSwagger.WrapHandler)
+
 	log.Println("[api] running at", addr)
 	err := http.ListenAndServe(addr, &api.mux)
 

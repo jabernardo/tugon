@@ -10,6 +10,10 @@ import (
 	"github.com/joho/godotenv"
 )
 
+// @title         A-API
+// @version       1.0
+// @description   This is a simple REST API for the Boiler Plate API
+
 func main() {
 	err := godotenv.Load()
 

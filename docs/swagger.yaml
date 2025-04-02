@@ -1,0 +1,48 @@
+definitions:
+  v1.MemStats:
+    properties:
+      alloc:
+        type: number
+      gc_cycle:
+        type: integer
+      gc_last:
+        type: integer
+      gc_next:
+        type: integer
+      sys:
+        type: number
+    type: object
+  v1.Stats:
+    properties:
+      memstats:
+        $ref: '#/definitions/v1.MemStats'
+      message:
+        type: string
+    type: object
+info:
+  contact: {}
+  description: This is a simple REST API for the Boiler Plate API
+  title: A-API
+  version: "1.0"
+paths:
+  /v1/hello:
+    get:
+      description: A simple greeting earthlings!
+      produces:
+      - text/plain
+      responses:
+        "200":
+          description: Hello World!
+          schema:
+            type: string
+  /v1/ping:
+    get:
+      description: Check API health
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/v1.Stats'
+swagger: "2.0"

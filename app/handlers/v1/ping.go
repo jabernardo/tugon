@@ -30,6 +30,13 @@ func byteToMb(b uint64) float64 {
 	return float64(b) / 1024 / 1024
 }
 
+// Am I real?
+//
+// @Description   Check API health
+// @Produce       json
+// @Success       200   {object} Stats
+//
+// @Router        /v1/ping [get]
 func Ping(w http.ResponseWriter, r *http.Request) {
 	var m runtime.MemStats
 	runtime.ReadMemStats(&m)
