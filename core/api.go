@@ -29,7 +29,7 @@ func (api *API) Use(router *Router) {
 func (api *API) ListenAndServe(addr string) {
 	api.mux.HandleFunc("/swagger/", httpSwagger.WrapHandler)
 
-	log.Println("[api] running at", addr)
+	GetLoggerInstance().Info("Running at", "addr", addr)
 	err := http.ListenAndServe(addr, &api.mux)
 
 	if err != nil {

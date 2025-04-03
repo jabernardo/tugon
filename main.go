@@ -1,7 +1,6 @@
 package main
 
 import (
-	"log"
 	"os"
 
 	"github.com/jabernardo/tugon/app"
@@ -18,7 +17,7 @@ func main() {
 	err := godotenv.Load()
 
 	if err != nil {
-		log.Println("[aapi] could not load .env", err)
+		core.GetLoggerInstance().Warn("Could not load `.env`", "err", err)
 	}
 
 	api := core.New("1.0")
