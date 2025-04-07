@@ -1,11 +1,11 @@
 package v1
 
 import (
-	"encoding/json"
-	"fmt"
 	"math"
 	"net/http"
 	"runtime"
+
+	"github.com/jabernardo/tugon/core"
 )
 
 type MemStats struct {
@@ -21,6 +21,11 @@ type Stats struct {
 	MemStats MemStats `json:"memstats"`
 }
 
+type WrappedResponse struct {
+	core.SuccessResponse
+	Data Stats `json:"data"`
+}
+
 func roundFloat(val float64, precision uint) float64 {
 	ratio := math.Pow(10, float64(precision))
 	return math.Round(val*ratio) / ratio
@@ -34,8 +39,7 @@ func byteToMb(b uint64) float64 {
 //
 // @Description   Check API health
 // @Produce       json
-// @Success       200   {object} Stats
-//
+// @Success       200   {object} WrappedResponse
 // @Router        /v1/ping [get]
 func Ping(w http.ResponseWriter, r *http.Request) {
 	var m runtime.MemStats
@@ -49,12 +53,5 @@ func Ping(w http.ResponseWriter, r *http.Request) {
 		CountGc: uint64(m.NumGC),
 	}
 
-	err := json.NewEncoder(w).Encode(&Stats{Message: "Up and running!", MemStats: *memstats})
-
-	if err != nil {
-		fmt.Fprintf(w, "{\"success\": false}")
-	}
-
-	w.WriteHeader(200)
-	w.Header().Set("Content-Type", "application/json")
+	core.NewSuccessResponse(&Stats{Message: "Up and running!", MemStats: *memstats}).Write(w, nil)
 }

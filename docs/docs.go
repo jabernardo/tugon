@@ -25,7 +25,7 @@ const docTemplate = `{
                     "200": {
                         "description": "Hello World!",
                         "schema": {
-                            "type": "string"
+                            "$ref": "#/definitions/core.SuccessResponse"
                         }
                     }
                 }
@@ -41,7 +41,7 @@ const docTemplate = `{
                     "200": {
                         "description": "OK",
                         "schema": {
-                            "$ref": "#/definitions/v1.Stats"
+                            "$ref": "#/definitions/v1.WrappedResponse"
                         }
                     }
                 }
@@ -49,6 +49,15 @@ const docTemplate = `{
         }
     },
     "definitions": {
+        "core.SuccessResponse": {
+            "type": "object",
+            "properties": {
+                "data": {},
+                "success": {
+                    "type": "boolean"
+                }
+            }
+        },
         "v1.MemStats": {
             "type": "object",
             "properties": {
@@ -79,6 +88,17 @@ const docTemplate = `{
                     "type": "string"
                 }
             }
+        },
+        "v1.WrappedResponse": {
+            "type": "object",
+            "properties": {
+                "data": {
+                    "$ref": "#/definitions/v1.Stats"
+                },
+                "success": {
+                    "type": "boolean"
+                }
+            }
         }
     }
 }`
@@ -89,7 +109,7 @@ var SwaggerInfo = &swag.Spec{
 	Host:             "",
 	BasePath:         "",
 	Schemes:          []string{},
-	Title:            "A-API",
+	Title:            "Tugon",
 	Description:      "This is a simple REST API for the Boiler Plate API",
 	InfoInstanceName: "swagger",
 	SwaggerTemplate:  docTemplate,

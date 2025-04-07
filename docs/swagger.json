@@ -2,7 +2,7 @@
     "swagger": "2.0",
     "info": {
         "description": "This is a simple REST API for the Boiler Plate API",
-        "title": "A-API",
+        "title": "Tugon",
         "contact": {},
         "version": "1.0"
     },
@@ -17,7 +17,7 @@
                     "200": {
                         "description": "Hello World!",
                         "schema": {
-                            "type": "string"
+                            "$ref": "#/definitions/core.SuccessResponse"
                         }
                     }
                 }
@@ -33,7 +33,7 @@
                     "200": {
                         "description": "OK",
                         "schema": {
-                            "$ref": "#/definitions/v1.Stats"
+                            "$ref": "#/definitions/v1.WrappedResponse"
                         }
                     }
                 }
@@ -41,6 +41,15 @@
         }
     },
     "definitions": {
+        "core.SuccessResponse": {
+            "type": "object",
+            "properties": {
+                "data": {},
+                "success": {
+                    "type": "boolean"
+                }
+            }
+        },
         "v1.MemStats": {
             "type": "object",
             "properties": {
@@ -69,6 +78,17 @@
                 },
                 "message": {
                     "type": "string"
+                }
+            }
+        },
+        "v1.WrappedResponse": {
+            "type": "object",
+            "properties": {
+                "data": {
+                    "$ref": "#/definitions/v1.Stats"
+                },
+                "success": {
+                    "type": "boolean"
                 }
             }
         }

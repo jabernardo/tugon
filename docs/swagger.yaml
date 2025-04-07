@@ -1,4 +1,10 @@
 definitions:
+  core.SuccessResponse:
+    properties:
+      data: {}
+      success:
+        type: boolean
+    type: object
   v1.MemStats:
     properties:
       alloc:
@@ -19,10 +25,17 @@ definitions:
       message:
         type: string
     type: object
+  v1.WrappedResponse:
+    properties:
+      data:
+        $ref: '#/definitions/v1.Stats'
+      success:
+        type: boolean
+    type: object
 info:
   contact: {}
   description: This is a simple REST API for the Boiler Plate API
-  title: A-API
+  title: Tugon
   version: "1.0"
 paths:
   /v1/hello:
@@ -34,7 +47,7 @@ paths:
         "200":
           description: Hello World!
           schema:
-            type: string
+            $ref: '#/definitions/core.SuccessResponse'
   /v1/ping:
     get:
       description: Check API health
@@ -44,5 +57,5 @@ paths:
         "200":
           description: OK
           schema:
-            $ref: '#/definitions/v1.Stats'
+            $ref: '#/definitions/v1.WrappedResponse'
 swagger: "2.0"

@@ -1,17 +1,18 @@
 package v1
 
 import (
-	"fmt"
 	"net/http"
+
+	"github.com/jabernardo/tugon/core"
 )
 
 // Hello World!
 //
 // @Description   A simple greeting earthlings!
 // @Produce       plain
-// @Success       200   {string} string "Hello World!"
+// @Success       200   {object} core.SuccessResponse "Hello World!"
 //
 // @Router        /v1/hello [get]
 func Hello(w http.ResponseWriter, r *http.Request) {
-	fmt.Fprintf(w, "Hello World!")
+	core.NewSuccessResponse("Hello World!").Write(w, nil)
 }
