@@ -36,6 +36,7 @@ func (s *SuccessResponse) Write(w http.ResponseWriter, opts *ResponseOptions) {
 		statusCode = opts.StatusCode
 	}
 
+	w.Header().Set("Content-Type", "application/json")
 	w.WriteHeader(statusCode)
 
 	err := json.NewEncoder(w).Encode(s)
@@ -43,6 +44,4 @@ func (s *SuccessResponse) Write(w http.ResponseWriter, opts *ResponseOptions) {
 	if err != nil {
 		fmt.Fprintf(w, "{}")
 	}
-
-	w.Header().Set("Content-Type", "application/json")
 }
