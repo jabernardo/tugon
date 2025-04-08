@@ -50,7 +50,13 @@ func (router *Router) Add(method string, pattern string, handler http.HandlerFun
 		method = method + " "
 	}
 
-	grouped := fmt.Sprintf("%s %s/%s", method, router.path, strings.Trim(pattern, "/"))
+	rootPath := fmt.Sprintf("%s/%s", router.path, strings.Trim(pattern, "/"))
+
+	if pattern == "/" {
+		rootPath = router.path
+	}
+
+	grouped := fmt.Sprintf("%s %s", method, rootPath)
 
 	if _, ok := router.routes[grouped]; ok {
 		log.Fatalf("[core.router] duplicated route: `%s`\n", pattern)
@@ -67,7 +73,7 @@ func (router *Router) Post(pattern string, handler http.HandlerFunc, middleware 
 	router.Add("POST", pattern, handler, middleware...)
 }
 
-func (router *Router) PUT(pattern string, handler http.HandlerFunc, middleware ...Middleware) {
+func (router *Router) Put(pattern string, handler http.HandlerFunc, middleware ...Middleware) {
 	router.Add("PUT", pattern, handler, middleware...)
 }
 
