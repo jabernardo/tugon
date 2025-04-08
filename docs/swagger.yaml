@@ -1,7 +1,48 @@
 definitions:
+  core.FailureResponse:
+    properties:
+      code:
+        type: integer
+      message:
+        type: string
+      success:
+        type: boolean
+    type: object
   core.SuccessResponse:
     properties:
       data: {}
+      success:
+        type: boolean
+    type: object
+  repositories.Todo:
+    properties:
+      description:
+        type: string
+      id:
+        type: integer
+      title:
+        type: string
+    type: object
+  todo.WrappedCreateItem:
+    properties:
+      data:
+        type: integer
+      success:
+        type: boolean
+    type: object
+  todo.WrappedGetAllResponse:
+    properties:
+      data:
+        items:
+          $ref: '#/definitions/repositories.Todo'
+        type: array
+      success:
+        type: boolean
+    type: object
+  todo.WrappedGetItem:
+    properties:
+      data:
+        $ref: '#/definitions/repositories.Todo'
       success:
         type: boolean
     type: object
@@ -58,4 +99,129 @@ paths:
           description: OK
           schema:
             $ref: '#/definitions/v1.WrappedResponse'
+  /v1/todo:
+    put:
+      consumes:
+      - application/json
+      description: Create a TODO item
+      parameters:
+      - description: Todo Object
+        in: body
+        name: data
+        required: true
+        schema:
+          $ref: '#/definitions/repositories.Todo'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/todo.WrappedCreateItem'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/core.FailureResponse'
+      tags:
+      - todo
+  /v1/todo/{id}:
+    delete:
+      consumes:
+      - application/json
+      description: Delete specific TODO item
+      parameters:
+      - description: TODO ID
+        in: path
+        name: id
+        required: true
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/core.SuccessResponse'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/core.FailureResponse'
+        "404":
+          description: Not Found
+          schema:
+            $ref: '#/definitions/core.FailureResponse'
+        "417":
+          description: Expectation Failed
+          schema:
+            $ref: '#/definitions/core.FailureResponse'
+      tags:
+      - todo
+    get:
+      consumes:
+      - application/json
+      description: Get specific TODO item
+      parameters:
+      - description: TODO ID
+        in: path
+        name: id
+        required: true
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/todo.WrappedGetItem'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/core.FailureResponse'
+        "404":
+          description: Not Found
+          schema:
+            $ref: '#/definitions/core.FailureResponse'
+      tags:
+      - todo
+    patch:
+      consumes:
+      - application/json
+      description: Update a TODO item
+      parameters:
+      - description: TODO ID
+        in: path
+        name: id
+        required: true
+        type: integer
+      - description: Todo Object
+        in: body
+        name: data
+        required: true
+        schema:
+          $ref: '#/definitions/repositories.Todo'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/core.SuccessResponse'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/core.FailureResponse'
+      tags:
+      - todo
+  /v1/todo/all:
+    get:
+      description: Get all TODO items
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/todo.WrappedGetAllResponse'
+      tags:
+      - todo
 swagger: "2.0"

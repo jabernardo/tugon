@@ -5,8 +5,6 @@ import (
 
 	"github.com/jabernardo/tugon/app"
 	"github.com/jabernardo/tugon/core"
-
-	"github.com/joho/godotenv"
 )
 
 // @title         Tugon
@@ -14,15 +12,12 @@ import (
 // @description   This is a simple REST API for the Boiler Plate API
 
 func main() {
-	err := godotenv.Load()
-
-	if err != nil {
-		core.GetLoggerInstance().Warn("Could not load `.env`", "err", err)
-	}
+	bootstrap()
 
 	api := core.New("1.0")
 
 	api.Use(app.GetRouter())
+	api.Use(app.GetTodoRouter())
 
 	addr := ":5000"
 
