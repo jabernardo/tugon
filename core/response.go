@@ -45,3 +45,14 @@ func (s *SuccessResponse) Write(w http.ResponseWriter, opts *ResponseOptions) {
 		fmt.Fprintf(w, "{}")
 	}
 }
+
+func (s *FailureResponse) Write(w http.ResponseWriter) {
+	w.Header().Set("Content-Type", "application/json")
+	w.WriteHeader(s.Code)
+
+	err := json.NewEncoder(w).Encode(s)
+
+	if err != nil {
+		fmt.Fprintf(w, "{}")
+	}
+}
