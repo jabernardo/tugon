@@ -99,7 +99,7 @@ paths:
           description: OK
           schema:
             $ref: '#/definitions/v1.WrappedResponse'
-  /v1/todo:
+  /v1/todo/:
     put:
       consumes:
       - application/json

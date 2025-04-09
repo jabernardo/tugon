@@ -9,28 +9,22 @@ import (
 )
 
 type API struct {
-	version string
-	mux     http.ServeMux
+	Addr   string
+	Router *Router
 }
 
-func New(version string) *API {
+func New(router *Router, addr string) *API {
 	return &API{
-		version: version,
-		mux:     *http.NewServeMux(),
+		Addr:   addr,
+		Router: router,
 	}
 }
 
-func (api *API) Use(router *Router) {
-	for key, val := range router.GetRoutes() {
-		api.mux.Handle(key, val)
-	}
-}
+func (api *API) ListenAndServe() {
+	api.Router.Mux.HandleFunc("/swagger/", httpSwagger.WrapHandler)
 
-func (api *API) ListenAndServe(addr string) {
-	api.mux.HandleFunc("/swagger/", httpSwagger.WrapHandler)
-
-	GetLoggerInstance().Info("Running at", "addr", addr)
-	err := http.ListenAndServe(addr, &api.mux)
+	GetLoggerInstance().Info("Running at", "addr", api.Addr)
+	err := http.ListenAndServe(api.Addr, &api.Router.Mux)
 
 	if err != nil {
 		log.Fatalln(err)

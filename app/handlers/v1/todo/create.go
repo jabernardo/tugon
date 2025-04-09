@@ -15,7 +15,7 @@ import (
 // @Param         data body repositories.Todo true "Todo Object"
 // @Success       200 {object} WrappedCreateItem
 // @Failure       400 {object} core.FailureResponse
-// @Router        /v1/todo [put]
+// @Router        /v1/todo/ [put]
 func Create(w http.ResponseWriter, r *http.Request) {
 	todoRepo := repositories.NewTodoRepository()
 	var todo repositories.Todo

@@ -2,22 +2,19 @@ package core
 
 import (
 	"fmt"
-	"log"
 	"net/http"
 	"strings"
 )
 
-type Routes map[string]http.Handler
 type Router struct {
-	routes      Routes
-	middlewares []Middleware
-	path        string
+	Mux         http.ServeMux
+	Middlewares []Middleware
 }
 
 func NewRouter() *Router {
 	return &Router{
-		routes:      make(Routes),
-		middlewares: make([]Middleware, 0),
+		Mux:         *http.NewServeMux(),
+		Middlewares: make([]Middleware, 0),
 	}
 }
 
@@ -25,24 +22,20 @@ func createRoute(router *Router, pattern string, handler http.HandlerFunc, middl
 	route := http.NewServeMux()
 	route.HandleFunc(pattern, handler)
 
-	groupMiddlewares := CreateMiddlewareStack(router.middlewares...)
+	groupMiddlewares := CreateMiddlewareStack(router.Middlewares...)
 	routeSpecificMiddlewares := CreateMiddlewareStack(middleware...)
 	return groupMiddlewares(routeSpecificMiddlewares(route))
 }
 
-func (router *Router) SetGroup(path string) {
-	if len(router.routes) > 0 {
-		log.Fatalln("[core.router] could not set group when routes already exists")
-	}
-	router.path = "/" + strings.Trim(path, "/")
-}
-
-func (router *Router) GetRoutes() Routes {
-	return router.routes
-}
-
 func (router *Router) Use(middleware ...Middleware) {
-	router.middlewares = append(router.middlewares, middleware...)
+	router.Middlewares = append(router.Middlewares, middleware...)
+}
+
+func (router *Router) Group(path string, sub *Router) {
+	cleanedPath := strings.TrimRight(path, "/")
+	groupMiddlewares := CreateMiddlewareStack(router.Middlewares...)
+	groupHandler := groupMiddlewares(http.StripPrefix(cleanedPath, &sub.Mux))
+	router.Mux.Handle(cleanedPath+"/", groupHandler)
 }
 
 func (router *Router) Add(method string, pattern string, handler http.HandlerFunc, middleware ...Middleware) {
@@ -50,19 +43,10 @@ func (router *Router) Add(method string, pattern string, handler http.HandlerFun
 		method = method + " "
 	}
 
-	rootPath := fmt.Sprintf("%s/%s", router.path, strings.Trim(pattern, "/"))
+	grouped := fmt.Sprintf("%s %s", method, pattern)
 
-	if pattern == "/" {
-		rootPath = router.path
-	}
-
-	grouped := fmt.Sprintf("%s %s", method, rootPath)
-
-	if _, ok := router.routes[grouped]; ok {
-		log.Fatalf("[core.router] duplicated route: `%s`\n", pattern)
-	}
-
-	router.routes[grouped] = createRoute(router, grouped, handler, middleware...)
+	customHandler := createRoute(router, grouped, handler, middleware...)
+	router.Mux.Handle(grouped, customHandler)
 }
 
 func (router *Router) Get(pattern string, handler http.HandlerFunc, middleware ...Middleware) {

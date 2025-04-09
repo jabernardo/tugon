@@ -14,16 +14,13 @@ import (
 func main() {
 	bootstrap()
 
-	api := core.New("1.0")
-
-	api.Use(app.GetRouter())
-	api.Use(app.GetTodoRouter())
-
 	addr := ":5000"
 
 	if addrEnv, ok := os.LookupEnv("ADDR"); ok {
 		addr = addrEnv
 	}
 
-	api.ListenAndServe(addr)
+	router := app.GetRouter()
+	api := core.New(router, addr)
+	api.ListenAndServe()
 }

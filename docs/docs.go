@@ -47,7 +47,7 @@ const docTemplate = `{
                 }
             }
         },
-        "/v1/todo": {
+        "/v1/todo/": {
             "put": {
                 "description": "Create a TODO item",
                 "consumes": [
