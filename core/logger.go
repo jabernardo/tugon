@@ -11,7 +11,7 @@ var (
 	loggerOnce sync.Once
 )
 
-func GetLoggerInstance() *slog.Logger {
+func Logger() *slog.Logger {
 	loggerOnce.Do(func() {
 		logger = slog.New(slog.NewJSONHandler(os.Stdout, nil))
 	})

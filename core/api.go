@@ -23,7 +23,7 @@ func New(router *Router, addr string) *API {
 func (api *API) ListenAndServe() {
 	api.Router.Mux.HandleFunc("/swagger/", httpSwagger.WrapHandler)
 
-	GetLoggerInstance().Info("Running at", "addr", api.Addr)
+	Logger().Info("Running at", "addr", api.Addr)
 	err := http.ListenAndServe(api.Addr, &api.Router.Mux)
 
 	if err != nil {

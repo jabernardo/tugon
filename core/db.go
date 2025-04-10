@@ -24,19 +24,19 @@ func GetDBInstance() *sql.DB {
 		)
 
 		if driver, exists = os.LookupEnv("SQL_DRIVER"); !exists {
-			GetLoggerInstance().Error("[core.db] Environment `SQL_DRIVER` is not defined")
+			Logger().Error("[core.db] Environment `SQL_DRIVER` is not defined")
 			os.Exit(1)
 		}
 
 		if conn, exists = os.LookupEnv("SQL_CONN"); !exists {
-			GetLoggerInstance().Error("[core.db] Environment `SQL_DRIVER` is not defined")
+			Logger().Error("[core.db] Environment `SQL_DRIVER` is not defined")
 			os.Exit(1)
 		}
 
 		db, err = sql.Open(driver, conn)
 
 		if err != nil {
-			GetLoggerInstance().Error("[core.db] Cannot open connection to database", "error", err)
+			Logger().Error("[core.db] Cannot open connection to database", "error", err)
 			os.Exit(1)
 		}
 	})

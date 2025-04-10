@@ -26,7 +26,7 @@ func bootstrap() {
 	err := godotenv.Load()
 
 	if err != nil {
-		core.GetLoggerInstance().Warn("Could not load `.env`", "err", err)
+		core.Logger().Warn("Could not load `.env`", "err", err)
 
 	}
 	setupRepositories()
